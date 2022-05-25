@@ -129,7 +129,7 @@ function Medicine(props) {
             }
     });
 
-    console.log(newData);
+    console.log(newData );
 
     localStorage.setItem("medicines" ,JSON.stringify(newData))
     
