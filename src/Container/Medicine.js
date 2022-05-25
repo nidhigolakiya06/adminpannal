@@ -101,7 +101,6 @@ function Medicine(props) {
         localStorage.removeItem("medicines")
         localStorage.setItem("medicines", JSON.stringify(afterDeleteData))
         alert("delete data")
-        console.log("loaddata")
 
         loadData()
     }
