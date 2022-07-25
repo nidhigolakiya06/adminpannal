@@ -11,7 +11,7 @@ function UseMemo_example(props) {
         if (n > 1) {
             return (n* findfectorial(n-1))
         }else {
-            return 1
+            return 1 
         }
     }
 
@@ -19,7 +19,9 @@ function UseMemo_example(props) {
     // const result = findfectorial(number)
 
     // with memoized  //
+
     const result = useMemo((e) =>  findfectorial(number) ,[number])
+    console.log(result);
 
     return (
         <div>

@@ -1,4 +1,5 @@
 import { height } from '@mui/system';
+import { logDOM } from '@testing-library/react';
 import React, { useCallback, useState } from 'react';
 import ListItem from './ListItem';
 
@@ -17,6 +18,7 @@ function UseCallBack(props) {
             return [i+number, i+number+1, i+number+2]
         },
     [number] )
+    console.log(getItem);
 
 
     return (
