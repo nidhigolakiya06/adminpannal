@@ -11,12 +11,19 @@ import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useDispatch, useSelector } from 'react-redux';
+import { addMedicine, deletMedicines, medicineGET, updataMedicine } from '../Redux/Action/medicine.action';
 
 
 function Medicine(props) {
     const [open, setOpen] = useState(false);
     const [data, setData] = useState([]);
     const [update, setUpdate] = useState();
+    const [filterData, setFilterData] = useState([]);
+
+    const medicine = useSelector(state => state.medicine)
+
+    console.log(medicine.error)
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
@@ -75,34 +82,39 @@ function Medicine(props) {
             ...values
         }
 
-        let localData = JSON.parse(localStorage.getItem("medicines"))
+        dispatch(addMedicine(Data))
+        // let localData = JSON.parse(localStorage.getItem("medicines"))
 
-        if (localData === null) {
-            localStorage.setItem("medicines", JSON.stringify([Data]))
-        } else {
-            localData.push(Data)
-            localStorage.setItem("medicines", JSON.stringify(localData))
-        }
+        // if (localData === null) {
+        //     localStorage.setItem("medicines", JSON.stringify([Data]))
+        // } else {
+        //     localData.push(Data)
+        //     localStorage.setItem("medicines", JSON.stringify(localData))
+        // }
 
         setOpen(false);
-        loadData()
+        // loadData()
+
+        
 
     }
 
     const handleDelet = (params) => {
-        console.log(params)
-        let deleteData = JSON.parse(localStorage.getItem("medicines"))
+        console.log(params.id)
 
-        console.log(deleteData)
+        dispatch(deletMedicines(params.id))
+        // let deleteData = JSON.parse(localStorage.getItem("medicines"))
 
-        let afterDeleteData = deleteData.filter((l) => params.id !== l.id)
-        console.log(afterDeleteData);
+        // console.log(deleteData)
 
-        localStorage.removeItem("medicines")
-        localStorage.setItem("medicines", JSON.stringify(afterDeleteData))
-        alert("delete data")
+        // let afterDeleteData = deleteData.filter((l) => params.id !== l.id)
+        // console.log(afterDeleteData);
 
-        loadData()
+        // localStorage.removeItem("medicines")
+        // localStorage.setItem("medicines", JSON.stringify(afterDeleteData))
+        // alert("delete data")
+
+        // loadData()
     }
 
     const handleEdit = (data) => {
@@ -118,25 +130,27 @@ function Medicine(props) {
     const handleUpdateData = (values) => {
         console.log(values);
 
-        let loadData = JSON.parse(localStorage.getItem("medicines"))
+        dispatch(updataMedicine(values))
 
-       let newData= loadData.map((l,i) => {
+        // let loadData = JSON.parse(localStorage.getItem("medicines"))
 
-            if (l.id === values.id) {
-                return values
-            }else{
-                return l
-            }
-    });
+        // let newData = loadData.map((l, i) => {
 
-    console.log(newData );
+        //     if (l.id === values.id) {
+        //         return values
+        //     } else {
+        //         return l
+        //     }
+        // });
 
-    localStorage.setItem("medicines" ,JSON.stringify(newData))
-    
+        // console.log(newData);
 
-    setOpen(false);
-    setUpdate();
-    loadData();
+        // localStorage.setItem("medicines", JSON.stringify(newData))
+
+
+        setOpen(false);
+        setUpdate();
+        // loadData();
 
 
         console.log(loadData);
@@ -144,18 +158,22 @@ function Medicine(props) {
 
     const loadData = () => {
 
-        let loadData = JSON.parse(localStorage.getItem("medicines"))
+        // let loadData = JSON.parse(localStorage.getItem("medicines"))
 
-        if (loadData !== null) {
-            setData(loadData)
-        }
+        // if (loadData !== null) {
+            setData(medicine.medicine)
+        // }
 
     }
 
+    const dispatch = useDispatch()
+
     useEffect(
         () => {
-
-            loadData()
+           // loadData();  
+            
+            dispatch(medicineGET())
+            
         },
         [])
 
@@ -170,31 +188,64 @@ function Medicine(props) {
 
     const formik = useFormik({
         initialValues: {
-            
-            Name:  '',
+
+            Name: '',
             Quantity: '',
             Price: '',
             Expiry: '',
         },
-        
+
         validationSchema: schema,
         onSubmit: values => {
             // alert(JSON.stringify(values, null, 2));
             if (update) {
                 handleUpdateData(values)
-            }else{
+            } else {
                 handleSubmitData(values)
             }
-            
-                
+
+
         },
     });
 
+
+    const handleSearch = (value) => {
+        
+        let loadData = JSON.parse(localStorage.getItem("medicines"))
+
+        console.log(value, loadData);
+        let fData = loadData.filter((l) => (
+            l.id.toString().includes(value) ||
+            l.Name.toString().toLowerCase().includes(value.toLowerCase()) ||
+            l.Quantity.toString().includes(value) ||
+            l.Price.toString().includes(value) ||
+            l.Expiry.toString().includes(value) 
+        ))
+
+        setFilterData(fData)
+        console.log(fData);
+    }
+
+   let FilterData = filterData.length > 0 ? filterData : data
     
 
     return (
-        <div>
+        <>
+            {
+                medicine.isLoading ?
+                <p>Loading...</p>
+                :
+                medicine.error ? 
+                <h1>{medicine.error}</h1>
+                :
+                <div>
             <h1>Medicines</h1>
+
+            <TextField
+                label="Search Medicine"
+                name="search"
+                onChange={(e) => handleSearch(e.target.value)}
+            />
 
             <div className='col-12'>
                 <Button variant="outlined" onClick={handleClickOpen}>
@@ -204,7 +255,7 @@ function Medicine(props) {
 
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={data}
+                    rows={medicine.medicine}
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
@@ -224,7 +275,7 @@ function Medicine(props) {
                 <DialogTitle id="alert-dialog-title">
                     {"Add New Medicine Dialog Box"}
                 </DialogTitle>
-                <Formik value={formik} >
+                <Formik values={formik} >
                     <Form onSubmit={formik.handleSubmit} noValidate>
                         <DialogContent>
                             <div>
@@ -235,7 +286,7 @@ function Medicine(props) {
                                         onChange={formik.handleChange}
                                         value={formik.values.Name}
                                     />
-                                    <p>{formik.errors.Name}</p>
+                                    <p className='error-mes'>{formik.errors.Name}</p>
                                 </div>
                                 <div className='col-6 instyle'>
                                     <TextField
@@ -244,7 +295,7 @@ function Medicine(props) {
                                         onChange={formik.handleChange}
                                         value={formik.values.Quantity}
                                     />
-                                    <p>{formik.errors.Quantity}</p>
+                                    <p className='error-mes'>{formik.errors.Quantity}</p>
                                 </div>
                                 <div className='col-6 instyle'>
                                     <TextField
@@ -255,7 +306,7 @@ function Medicine(props) {
                                         onChange={formik.handleChange}
                                         value={formik.values.Price}
                                     />
-                                    <p>{formik.errors.Price}</p>
+                                    <p className='error-mes'>{formik.errors.Price}</p>
                                 </div>
                                 <div className='col-6 instyle'>
                                     <TextField
@@ -266,14 +317,14 @@ function Medicine(props) {
                                         onChange={formik.handleChange}
                                         value={formik.values.Expiry}
                                     />
-                                    <p>{formik.errors.Expiry}</p>
+                                    <p className='error-mes'>{formik.errors.Expiry}</p>
                                 </div>
                             </div>
                             <DialogActions>
                                 <Button onClick={handleClose}>Cancle</Button>
                                 {
                                     update ?
-                                        <Button type='submit' autoFocus> Update</Button> 
+                                        <Button type='submit' autoFocus> Update</Button>
                                         :
                                         <Button type='submit' autoFocus>Submit</Button>
                                 }
@@ -285,6 +336,9 @@ function Medicine(props) {
             </Dialog>
 
         </div>
+            }
+        </>
+        
     );
 }
 
