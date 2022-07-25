@@ -10,7 +10,6 @@ function ListItem({ getItem }) {
         },
     [getItem] )
 
-    console.log(item);
 
     return (
         <div>

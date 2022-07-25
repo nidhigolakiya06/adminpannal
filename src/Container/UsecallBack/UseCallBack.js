@@ -18,7 +18,6 @@ function UseCallBack(props) {
             return [i+number, i+number+1, i+number+2]
         },
     [number] )
-    console.log(getItem);
 
 
     return (

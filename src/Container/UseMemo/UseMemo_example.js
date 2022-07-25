@@ -21,7 +21,6 @@ function UseMemo_example(props) {
     // with memoized  //
 
     const result = useMemo((e) =>  findfectorial(number) ,[number])
-    console.log(result);
 
     return (
         <div>
