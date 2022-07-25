@@ -1,0 +1,70 @@
+{
+  "medicine": [
+    {
+      "id": 3,
+      "Name": "efg1",
+      "Quantity": 300,
+      "Price": 150,
+      "Expiry": 2028
+    },
+    {
+      "id": 4,
+      "Name": "mno",
+      "Quantity": 500,
+      "Price": 100,
+      "Expiry": 2024
+    },
+    {
+      "id": 5,
+      "Name": "STU",
+      "Quantity": 700,
+      "Price": 400,
+      "Expiry": "2025"
+    },
+    {
+      "id": 497,
+      "Name": "uvw",
+      "Quantity": "500",
+      "Price": "201",
+      "Expiry": "2024"
+    },
+    {
+      "id": 154,
+      "Name": "ABC",
+      "Quantity": "100",
+      "Price": "500",
+      "Expiry": "2027"
+    },
+    {
+      "id": 52,
+      "Name": "ABC",
+      "Quantity": "100",
+      "Price": "500",
+      "Expiry": "2027"
+    },
+    {
+      "id": 319,
+      "Name": "ABC",
+      "Quantity": "100",
+      "Price": "500",
+      "Expiry": "2027"
+    },
+    {
+      "id": 596,
+      "Name": "EFG",
+      "Quantity": "200",
+      "Price": "300",
+      "Expiry": "2024"
+    }
+  ],
+  "doctors": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

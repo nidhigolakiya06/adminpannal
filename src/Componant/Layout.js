@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -20,6 +20,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import PersonIcon from '@mui/icons-material/Person';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { NavLink } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -107,7 +108,12 @@ export default function MiniDrawer({children}) {
 
     const Item = [
         {to :'/Medicine', label : 'Medicine', icon:< LocalHospitalIcon/> },
-        {to :'/Doctor', label : 'Doctor', icon:< PersonIcon/> }
+        {to :'/Doctor', label : 'Doctor', icon:< PersonIcon/> },
+        {to :'/Patient', label : 'Patient', icon:< PersonAddIcon/> },
+        {to :'/promises_Example', label : 'promises Example', icon:< InboxIcon/> },
+        {to :'/UseMemo_Example', label : 'UseMemo Example', icon:< MailIcon/> },
+        {to :'/UseCallBack_Example', label : 'UseCallBack Example', icon:< MailIcon/> },
+        {to :'/Apps_Example', label : 'Apps Example', icon:< MailIcon/> }
     ]
 
     return (

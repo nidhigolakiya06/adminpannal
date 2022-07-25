@@ -15,3 +15,6 @@ code {
 .instyle{
   margin-bottom: 15px;
 }
+.error-mes{
+  color: red;
+}
